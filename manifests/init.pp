@@ -54,17 +54,17 @@
 #
 class windows_python(
   $python_source      = undef,
-  $python_remote      = $::openstack_hyper_v::python::params::python_remote,
-  $python_package     = $::openstack_hyper_v::python::params::python_package,
-  $python_installdir  = $::openstack_hyper_v::python::params::python_installdir,
+  $python_remote      = $::windows_python::params::python_remote,
+  $python_package     = $::windows_python::params::python_package,
+  $python_installdir  = $::windows_python::params::python_installdir,
   $easyinstall_source = undef,
-  $easyinstall_remote = $::openstack_hyper_v::python::params::easyinstall_remote,
+  $easyinstall_remote = $::windows_python::params::easyinstall_remote,
   $pip_source         = undef,
-  $pip_remote         = $::openstack_hyper_v::python::params::pip_remote,
+  $pip_remote         = $::windows_python::params::pip_remote,
 ) inherits windows_python::params {
 
   if $python_source == undef {
-    $python_source_real = $::openstack_hyper_v::python::params::python_source
+    $python_source_real = $::windows_python::params::python_source
 
     windows_common::remote_file{'python.msi':
       source      => $python_remote,
@@ -76,7 +76,7 @@ class windows_python(
   }
 
   if $easyinstall_source == undef {
-    $easyinstall_source_real = $::openstack_hyper_v::python::params::easyinstall_source
+    $easyinstall_source_real = $::windows_python::params::easyinstall_source
 
     windows_common::remote_file{'ez_setup.py':
       source      => $easyinstall_remote,
@@ -88,7 +88,7 @@ class windows_python(
   }
 
   if $pip_source == undef {
-    $pip_source_real = $::openstack_hyper_v::python::params::pip_source
+    $pip_source_real = $::windows_python::params::pip_source
 
     windows_common::remote_file{'get-pip.py':
       source      => $pip_remote,
