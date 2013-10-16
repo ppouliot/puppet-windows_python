@@ -1,4 +1,4 @@
-# === Define: openstack_h yper_v::python::windows_service
+# === Define: windows_python::windows_service
 #
 #  Define responsible of defining Windows services based on pyhtno code. It uses
 #  win32service functionality to make it work.
@@ -20,7 +20,7 @@
 #   Python script that will be called by the service.
 # == Examples
 #
-#  openstack_hyper_v::python::windows_service { 'nova-compute':
+#  windows_python::windows_service { 'nova-compute':
 #    ensure      => present, 
 #    description => 'OpenStack Nova compute service for Hyper-V',
 #    start       => automatic,

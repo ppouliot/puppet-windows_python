@@ -1,4 +1,4 @@
-# === Define: openstack_h yper_v::python::dependency
+# === Define: windows_python::dependency
 #
 #  >
 #
@@ -12,24 +12,24 @@
 #
 # == Examples
 #
-#  openstack_hyper_v::python::dependency { 'M2Crypto':
+#  windows_python::dependency { 'M2Crypto':
 #    name => 'Python 2.7 M2Crypto-0.21.1'
 #    remote_url      => 'http://chandlerproject.org/pub/Projects/MeTooCrypto/M2Crypto-0.21.1.win32-py2.7.msi'
 #    soure      => "${::temp}\\M2Crypto-0.21.1.win32-py2.7.msi"
 #  }
 #
-#  openstack_hyper_v::python::dependency { 'Python 2.7 M2Crypto-0.21.1':
+#  windows_python::dependency { 'Python 2.7 M2Crypto-0.21.1':
 #    remote_url      => 'http://chandlerproject.org/pub/Projects/MeTooCrypto/M2Crypto-0.21.1.win32-py2.7.msi'
 #    source      => "${::temp}\\M2Crypto-0.21.1.win32-py2.7.msi"
 #  }
 #
-#  openstack_hyper_v::python::dependency { 'Python 2.7 M2Crypto-0.21.1':
+#  windows_python::dependency { 'Python 2.7 M2Crypto-0.21.1':
 #    source      => "G:\\Software\\Python\\M2Crypto-0.21.1.win32-py2.7.msi"
 #  }
 #
 # == Authors
 #
-define openstack_hyper_v::python::dependency (
+define windows_python::dependency (
   $type,
   $remote_url = undef,
   $source     = undef,
@@ -39,10 +39,14 @@ define openstack_hyper_v::python::dependency (
     egg: {
       if $source == undef {
         if $remote_url == undef {
-          $source_real = $name
+          if $version != latest {
+			 $source_real = "$name==$version"
+		   } else {
+		     $source_real = $name
+		     }
         } else {        
           $source_real = "${::temp}\\${title}.${type}"
-          openstack_hyper_v::base::remote_file{ $source_real:
+          windows_common::remote_file{ $source_real:
             source      => $remote_url,
             destination => $source_real,
             before      => Exec["egg-python-dependency-${name}"],
@@ -61,16 +65,16 @@ define openstack_hyper_v::python::dependency (
     exe: {
       if $source == undef {
         $source_real = "${::temp}\\${title}.${type}"
-        openstack_hyper_v::base::remote_file{ $source_real:
+        windows_common::remote_file{ $source_real:
           source      => $remote_url,
           destination => $source_real,
-          before      => Openstack_hyper_v::Base::Extract_file["exe-installer-extract-${name}"],
+          before      => Windows_7zip::Extract_file["exe-installer-extract-${name}"],
         }
       } else {
         $source_real = $source
       }
 
-      openstack_hyper_v::base::extract_file{"exe-installer-extract-${name}":
+      windows_7zip::extract_file{"exe-installer-extract-${name}":
         file        => $source_real,
         destination => $::temp,
       }
@@ -79,7 +83,7 @@ define openstack_hyper_v::python::dependency (
         command  => "Write-Output \"Installing python dependency: ${name}",
         unless   => "\$output = pip freeze; exit !(\$output.Contains('${name}==${version}'))",
         provider => powershell,
-        notify   => Openstack_hyper_v::Base::Extract_file["exe-installer-extract-${name}"],
+        notify   => Windows_7zip::Extract_file["exe-installer-extract-${name}"],
       }
 
       exec { "move-platlib-${name}":
@@ -87,7 +91,7 @@ define openstack_hyper_v::python::dependency (
         unless      => "exit (Test-Path -Path '${::temp}\PLATLIB')",
         provider    => powershell,
         refreshonly => true,
-        subscribe   => Openstack_hyper_v::Base::Extract_file["exe-installer-extract-${name}"],
+        subscribe   => Windows_7zip::Extract_file["exe-installer-extract-${name}"],
       }
 
       exec { "move-scripts-${name}":
@@ -95,7 +99,7 @@ define openstack_hyper_v::python::dependency (
         unless      => "exit (Test-Path -Path '${::temp}\SCRIPTS')",
         provider    => powershell,
         refreshonly => true,
-        subscribe   => Openstack_hyper_v::Base::Extract_file["exe-installer-extract-${name}"],
+        subscribe   => Windows_7zip::Extract_file["exe-installer-extract-${name}"],
       }
 
       exec { "move-headers-${name}":
@@ -103,13 +107,13 @@ define openstack_hyper_v::python::dependency (
         unless      => "exit (Test-Path -Path '${::temp}\HEADERS')",
         provider    => powershell,
         refreshonly => true,
-        subscribe   => Openstack_hyper_v::Base::Extract_file["exe-installer-extract-${name}"],
+        subscribe   => Windows_7zip::Extract_file["exe-installer-extract-${name}"],
       }
     }
     msi: {
       if $source == undef {
         $source_real = "${::temp}\\${title}.${type}"
-        openstack_hyper_v::base::remote_file{ $source_real:
+        windows_common::remote_file{ $source_real:
           source      => $remote_url,
           destination => $source_real,
           before      => Package[$name],
