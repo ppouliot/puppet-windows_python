@@ -35,6 +35,7 @@ define windows_python::windows_service (
   $description  = "",
   $start        = automatic,
   $arguments    = "",
+  $ensure       = present,
   $script,
 ){
 
