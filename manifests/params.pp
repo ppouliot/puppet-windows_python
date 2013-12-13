@@ -7,4 +7,5 @@ class windows_python::params {
   $easyinstall_remote = 'https://bitbucket.org/pypa/setuptools/raw/0.8/ez_setup.py'
   $pip_source         = "${::temp}\\get-pip.py"
   $pip_remote         = 'https://raw.github.com/pypa/pip/master/contrib/get-pip.py'
+  $chocolatey         = 'true'
 }

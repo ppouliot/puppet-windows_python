@@ -62,7 +62,9 @@ class windows_python(
   $pip_source         = undef,
   $pip_remote         = $::windows_python::params::pip_remote,
 ) inherits windows_python::params {
-
+  if $chocolatey {
+  notify {"Chocolatey is going to take care": }
+  } else {
   if $python_source == undef {
     $python_source_real = $::windows_python::params::python_source
 
@@ -130,4 +132,5 @@ class windows_python(
     provider => powershell,
     require  => Windows_path[$python_installdir],
   }
+ } 
 }
