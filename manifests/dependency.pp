@@ -88,7 +88,7 @@ define windows_python::dependency (
 
       exec { "move-platlib-${name}":
         command     => "Copy-Item -Path ${::temp}\\PLATLIB\\* -Destination C:\\python27\\Lib\\site-packages\\ -Force -Recurse; Remove-Item -Path ${::temp}\\PLATLIB -Force -Recurse",
-        unless      => "exit (Test-Path -Path '${::temp}\PLATLIB')",
+        unless      => "exit (Test-Path -Path '${::temp}\\PLATLIB')",
         provider    => powershell,
         refreshonly => true,
         subscribe   => Windows_7zip::Extract_file["exe-installer-extract-${name}"],
@@ -96,7 +96,7 @@ define windows_python::dependency (
 
       exec { "move-scripts-${name}":
         command     => "Copy-Item -Path ${::temp}\\SCRIPTS\\* -Destination C:\\python27\\Scripts\\ -Force -Recurse; Remove-Item -Path ${::temp}\\SCRIPTS -Force -Recurse",
-        unless      => "exit (Test-Path -Path '${::temp}\SCRIPTS')",
+        unless      => "exit (Test-Path -Path '${::temp}\\SCRIPTS')",
         provider    => powershell,
         refreshonly => true,
         subscribe   => Windows_7zip::Extract_file["exe-installer-extract-${name}"],
@@ -104,7 +104,7 @@ define windows_python::dependency (
 
       exec { "move-headers-${name}":
         command     => "Copy-Item -Path ${::temp}\\HEADERS\\* -Destination C:\\python27\\ -Force -Recurse; Remove-Item -Path ${::temp}\\HEADERS -Force -Recurse",
-        unless      => "exit (Test-Path -Path '${::temp}\HEADERS')",
+        unless      => "exit (Test-Path -Path '${::temp}\\HEADERS')",
         provider    => powershell,
         refreshonly => true,
         subscribe   => Windows_7zip::Extract_file["exe-installer-extract-${name}"],
