@@ -8,4 +8,5 @@ class windows_python::params {
   $pip_source         = "${::temp}\\get-pip.py"
   $pip_remote         = 'https://raw.github.com/pypa/pip/master/contrib/get-pip.py'
   $chocolatey         = 'true'
+  $easyinstall_chocolatey    = false
 }
