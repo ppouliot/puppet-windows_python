@@ -122,6 +122,25 @@ class windows_python(
     provider => powershell,
     require  => [Windows_path[$python_installdir],Exec['install-ez']],
   }
+  
+  $pip_conf_file =  "C:\\Users\\Administrator\pip\\pip.ini"
+
+  file { 'C:\\Users\\Administrator\\pip':
+    ensure     => directory,
+    require    => Exec['install-pip'],
+  }
+
+  file { $pip_conf_file :
+    ensure     => file,
+    source     => "puppet:///modules/windows_python/pip.ini",
+    require    => [File['C:\\Users\\Administrator\\pip'],Exec['install-pip']],
+  }
+
+  file { 'C:\\Users\\Administrator\\AppData\\Local\Temp\\pip':
+    ensure     => directory,
+    require    => Exec['install-pip'],
+  }
+
   if $easyinstall_chocolatey {
     $easyinstall_package = 'easy.install'
     package { $easyinstall_package:
