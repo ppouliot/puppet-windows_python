@@ -33,7 +33,7 @@
 define windows_python::windows_service (
   $display_name = $name,
   $description  = "",
-  $start        = automatic,
+  $start        = auto,
   $arguments    = "",
   $ensure       = present,
   $script,
