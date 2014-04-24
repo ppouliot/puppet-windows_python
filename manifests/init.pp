@@ -74,6 +74,7 @@ class windows_python(
     }
   } else {
   if $python_source == undef {
+    $python_package_name = $python_package
     $python_source_real = $::windows_python::params::python_source
     windows_common::remote_file{'python.msi':
       source      => $python_remote,
@@ -83,7 +84,6 @@ class windows_python(
   } else {
     $python_source_real = $python_source
   }
-  $python_package_name = $python_package
   package { $python_package_name:
     ensure          => installed,
     source          => $python_source_real,
