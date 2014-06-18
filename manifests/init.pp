@@ -62,6 +62,7 @@ class windows_python(
   $pip_source         = undef,
   $pip_remote         = $::windows_python::params::pip_remote,
 ) inherits windows_python::params {
+  $python_package_name = $python_package
    if $python_chocolatey {
     $python_chocolatey_package = 'python.x86'
     $python_package_name  = $python_chocolatey_package
@@ -74,7 +75,6 @@ class windows_python(
     }
   } else {
   if $python_source == undef {
-    $python_package_name = $python_package
     $python_source_real = $::windows_python::params::python_source
     windows_common::remote_file{'python.msi':
       source      => $python_remote,
@@ -133,6 +133,7 @@ class windows_python(
   file { $pip_conf_file :
     ensure     => file,
     source     => "puppet:///modules/windows_python/pip.ini",
+    source_permissions => ignore,
     require    => [File['C:\\Users\\Administrator\\pip'],Exec['install-pip']],
   }
 
