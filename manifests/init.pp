@@ -116,7 +116,7 @@ class windows_python(
 
   
   exec { 'install-pip':
-    command  => "& easy_install.exe pip==1.4.1",
+    command  => "& easy_install.exe pip==1.5.4",
     creates  => "${python_installdir}\\Scripts\\pip.exe",
     unless   => "exit !(Test-Path -Path '${python_installdir}\\Scripts\\pip.exe')",
     provider => powershell,
