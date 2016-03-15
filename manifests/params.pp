@@ -1,3 +1,4 @@
+# == Class windows_python::params
 class windows_python::params {
   $python_source             = "${::temp}\\python.msi"
   $python_remote             = 'http://www.python.org/ftp/python/2.7.6/python-2.7.6.msi'

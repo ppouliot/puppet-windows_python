@@ -31,12 +31,12 @@
 # == Authors
 #
 define windows_python::windows_service (
-  $display_name = $name,
-  $description  = "",
-  $start        = auto,
-  $arguments    = "",
-  $ensure       = present,
   $script,
+  $display_name = $name,
+  $description  = '',
+  $start        = auto,
+  $arguments    = '',
+  $ensure       = present,
 ){
 
   exec { "create-python-${name}-windows-service":
@@ -49,7 +49,6 @@ define windows_python::windows_service (
     ensure  => $ensure,
     require => Exec["create-python-${name}-windows-service"],
   }
-
   registry_value { "HKLM\\System\\CurrentControlSet\\Services\\${name}\\PythonClass\\":
     ensure  => $ensure,
     type    => string,

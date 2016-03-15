@@ -1,7 +1,8 @@
+# == Class: windows_python::package::exe
 define windows_python::package::exe (
+  $version,
   $url        = undef,
   $installer  = undef,
-  $version,
 ){
 
   Exec { provider => powershell, }
@@ -23,9 +24,9 @@ define windows_python::package::exe (
   }
 
   exec { "trigger-python-dependency-${name}":
-    command  => "Write-Output \"Installing python dependency: ${name}",
-    unless   => "\$output = pip freeze; exit !(\$output.ToLower().Contains(\"${name}==${version}\".ToLower()))",
-    notify   => Windows_7zip::Extract_file["exe-installer-extract-${name}"],
+    command => "Write-Output \"Installing python dependency: ${name}",
+    unless  => "\$output = pip freeze; exit !(\$output.ToLower().Contains(\"${name}==${version}\".ToLower()))",
+    notify  => Windows_7zip::Extract_file["exe-installer-extract-${name}"],
   }
 
   exec { "move-platlib-${name}":
@@ -47,5 +48,5 @@ define windows_python::package::exe (
     unless      => "exit (Test-Path -Path '${::temp}\\HEADERS')",
     refreshonly => true,
     subscribe   => Windows_7zip::Extract_file["exe-installer-extract-${name}"],
-  } 
+  }
 }

@@ -40,11 +40,11 @@ define windows_python::dependency (
       if $source == undef {
         if $remote_url == undef {
           if $version != latest {
-			 $source_real = "$name==$version"
-		   } else {
-		     $source_real = $name
-		     }
-        } else {        
+            $source_real = "${name}==${version}"
+          } else {
+            $source_real = $name
+          }
+        } else {
           $source_real = "${::temp}\\${title}.${type}"
           windows_common::remote_file{ $source_real:
             source      => $remote_url,
@@ -121,7 +121,6 @@ define windows_python::dependency (
       } else {
         $source_real = $source
       }
-
       package { $name:
         ensure          => installed,
         source          => $source_real,
@@ -130,13 +129,13 @@ define windows_python::dependency (
     }
     pip: {
       package { $name:
-        source   => $source,
         ensure   => $version,
+        source   => $source,
         provider => pip,
       }
     }
     default: {
       fail "Invalid installer type: ${type}"
     }
-  }  
+  }
 }

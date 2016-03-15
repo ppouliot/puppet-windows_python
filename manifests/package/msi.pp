@@ -1,8 +1,8 @@
+# == Class: windows_python::package::msi
 define windows_python::package::msi (
   $installer,
   $url,
 ){
-
   if $installer == undef {
     $installer_path = "${::temp}\\${title}.msi"
     windows_common::remote_file{ $installer_path:
@@ -13,10 +13,11 @@ define windows_python::package::msi (
   } else {
     $installer_path = $installer
   }
-
   package { $name:
     ensure          => installed,
     source          => $installer_path,
-    install_options => ['/PASSIVE', {'ALLUSERS'=>'1'},],
+    install_options => [
+      '/PASSIVE',{'ALLUSERS'=>'1'},
+    ],
   }
 }
